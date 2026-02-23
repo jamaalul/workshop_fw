@@ -8,7 +8,7 @@
                     <!--change to offline or busy as needed-->
                 </div>
                 <div class="d-flex flex-column nav-profile-text">
-                    <span class="mb-2 font-weight-bold">David Grey. H</span>
+                    <span class="mb-2 font-weight-bold">{{ Auth::user()->name }}</span>
                     <span class="text-secondary text-small">Project Manager</span>
                 </div>
                 <i class="text-success mdi mdi-bookmark-check nav-profile-badge"></i>
