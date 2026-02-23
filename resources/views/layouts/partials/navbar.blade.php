@@ -34,8 +34,13 @@
                     <a class="dropdown-item" href="#">
                         <i class="me-2 text-success mdi mdi-cached"></i> Activity Log </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-                        <i class="me-2 text-primary mdi mdi-logout"></i> Signout </a>
+                    <form action="/logout" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="dropdown-item"
+                            style="border: none; background: none; padding: 0.5rem 1rem; width: 100%; text-align: left;">
+                            <i class="me-2 text-primary mdi mdi-logout"></i> Signout
+                        </button>
+                    </form>
                 </div>
             </li>
             <li class="d-lg-block nav-item d-none full-screen-link">

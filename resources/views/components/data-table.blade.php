@@ -1,16 +1,24 @@
-@props(['tableData' => []])
+@props(['tableData' => [], 'pdfRoute' => null, 'printAllRoute' => null])
 
 <div class="grid-margin col-lg-12 stretch-card">
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h4 class="mb-0 card-title">{{ $title }}</h4>
-                @if ($createRoute)
-                    <a href="{{ route($createRoute) }}" class="btn btn-primary btn-sm">
-                        <i class="mr-1 mdi mdi-plus"></i>
-                        Tambah Baru
-                    </a>
-                @endif
+                <div class="d-flex" style="gap: 0.5rem;">
+                    @if ($printAllRoute)
+                        <a href="{{ route($printAllRoute) }}" target="_blank" class="btn btn-inverse-info btn-sm">
+                            <i class="mr-1 mdi mdi-printer"></i>
+                            Cetak Laporan
+                        </a>
+                    @endif
+                    @if ($createRoute)
+                        <a href="{{ route($createRoute) }}" class="btn btn-primary btn-sm">
+                            <i class="mr-1 mdi mdi-plus"></i>
+                            Tambah Baru
+                        </a>
+                    @endif
+                </div>
             </div>
 
             @if (empty($tableData) || count($tableData) === 0)
@@ -47,7 +55,6 @@
                                         @endif
                                     @endforeach
                                     <td class="text-right" style="width: 1%; white-space: nowrap;">
-                                        <div class="d-flex justify-content-end" style="gap: 0.5rem;">
                                             @if ($editRoute && isset($row[$idField]))
                                                 <a href="{{ route($editRoute, $row[$idField]) }}"
                                                     class="d-flex align-items-center justify-content-center btn btn-inverse-primary btn-icon"

@@ -31,6 +31,31 @@ class RegisterController extends Controller
     protected $redirectTo = '/home';
 
     /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(\Illuminate\Http\Request $request, $user)
+    {
+        // Logout from regular session immediately
+        \Illuminate\Support\Facades\Auth::logout();
+
+        // Generate OTP
+        $otp = rand(100000, 999999);
+        $user->update(['otp' => $otp]);
+
+        // Send OTP to email
+        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+
+        // Store user ID in session for OTP verification
+        session(['otp_login_user_id' => $user->id]);
+
+        return redirect()->route('otp.form');
+    }
+
+    /**
      * Create a new controller instance.
      *
      * @return void
