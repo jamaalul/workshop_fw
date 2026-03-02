@@ -1,4 +1,4 @@
-@props(['tableData' => [], 'pdfRoute' => null, 'printAllRoute' => null])
+@props(['tableData' => [], 'pdfRoute' => null, 'printAllRoute' => null, 'labelRoute' => null])
 
 <div class="grid-margin col-lg-12 stretch-card">
     <div class="card">
@@ -6,6 +6,13 @@
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h4 class="mb-0 card-title">{{ $title }}</h4>
                 <div class="d-flex" style="gap: 0.5rem;">
+                    @if ($labelRoute)
+                        <button type="button" class="btn btn-inverse-info btn-sm" id="btnCetakLabel" disabled
+                            data-bs-toggle="modal" data-bs-target="#labelModal">
+                            <i class="mr-1 mdi mdi-label"></i>
+                            Cetak Label
+                        </button>
+                    @endif
                     @if ($printAllRoute)
                         <a href="{{ route($printAllRoute) }}" target="_blank" class="btn btn-inverse-info btn-sm">
                             <i class="mr-1 mdi mdi-printer"></i>
@@ -32,6 +39,11 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                @if ($labelRoute)
+                                    <th style="width: 1%; white-space: nowrap;">
+                                        <input type="checkbox" id="checkAll" title="Pilih Semua">
+                                    </th>
+                                @endif
                                 @foreach (array_keys((array) $tableData[0]) as $header)
                                     @if ($header !== $idField)
                                         <th class="text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">
@@ -47,6 +59,11 @@
                         <tbody>
                             @foreach ($tableData as $row)
                                 <tr>
+                                    @if ($labelRoute)
+                                        <td>
+                                            <input type="checkbox" class="row-checkbox" value="{{ $row[$idField] }}">
+                                        </td>
+                                    @endif
                                     @foreach ((array) $row as $key => $cell)
                                         @if ($key !== $idField)
                                             <td>
@@ -101,3 +118,30 @@
         </div>
     </div>
 </div>
+
+@if ($labelRoute)
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkAll = document.getElementById('checkAll');
+        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        const btnCetakLabel = document.getElementById('btnCetakLabel');
+
+        function updateButtonState() {
+            const checked = document.querySelectorAll('.row-checkbox:checked');
+            btnCetakLabel.disabled = checked.length === 0;
+        }
+
+        checkAll.addEventListener('change', function() {
+            rowCheckboxes.forEach(cb => cb.checked = this.checked);
+            updateButtonState();
+        });
+
+        rowCheckboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                checkAll.checked = document.querySelectorAll('.row-checkbox:checked').length === rowCheckboxes.length;
+                updateButtonState();
+            });
+        });
+    });
+</script>
+@endif

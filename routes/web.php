@@ -38,6 +38,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/laporan/buku', [LaporanController::class, 'bukuReport'])->name('laporan.buku');
     Route::get('/laporan/kategori', [LaporanController::class, 'kategoriReport'])->name('laporan.kategori');
+
+    Route::get('/barang', [DashboardController::class, 'barang'])->name('barang');
+    Route::get('/barang/create', [\App\Http\Controllers\BarangController::class, 'create'])->name('barang.create');
+    Route::post('/barang/store', [\App\Http\Controllers\BarangController::class, 'store'])->name('barang.store');
+    Route::get('/barang/{id}/edit', [\App\Http\Controllers\BarangController::class, 'edit'])->name('barang.edit');
+    Route::put('/barang/{id}', [\App\Http\Controllers\BarangController::class, 'update'])->name('barang.update');
+    Route::delete('/barang/{id}', [\App\Http\Controllers\BarangController::class, 'destroy'])->name('barang.destroy');
+    Route::post('/barang/print-label', [\App\Http\Controllers\BarangController::class, 'printLabel'])->name('barang.printLabel');
 });
 
 Route::get('/phpinfo', function () {

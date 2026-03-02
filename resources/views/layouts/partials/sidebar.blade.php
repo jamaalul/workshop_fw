@@ -26,5 +26,11 @@
                 <i class="mdi mdi-book-open-page-variant menu-icon"></i>
             </a>
         </li>
+        <li class="nav-item {{ request()->is('barang*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('barang') }}">
+                <span class="menu-title">Barang</span>
+                <i class="fa-inbox menu-icon"></i>
+            </a>
+        </li>
     </ul>
 </nav>

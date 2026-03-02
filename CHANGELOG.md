@@ -1,31 +1,36 @@
 # Changelog
 
-Semua perubahan penting pada proyek ini akan didokumentasikan dalam file ini.
+## [Unreleased] - 2026-03-02
 
-### 🔐 Autentikasi & Keamanan
-- **Integrasi Google SSO**: Mengimplementasikan login Google OAuth menggunakan Laravel Socialite untuk pengalaman autentikasi yang lancar.
-  ![Layar Login Google](path_screenshot_di_sini)
-- **Alur Verifikasi OTP**: Menambahkan lapisan verifikasi One-Time Password (OTP) 6 digit wajib setelah login SSO yang berhasil untuk menjamin keamanan akun.
-  ![Formulir Verifikasi OTP](path_screenshot_di_sini)
-- **Email OTP Otomatis**: Mengembangkan `OtpMail` dan mengintegrasikan sistem Mail Laravel untuk mengirimkan kode aman secara instan ke email pengguna.
-- **Perlindungan Rute Aman**: Menerapkan middleware `auth` pada semua rute administratif termasuk Dashboard, Kategori, dan Buku.
+### Added
 
-### 📚 Manajemen Sumber Daya (CRUD)
-- **Manajemen Kategori**: Implementasi penuh operasi Create, Read, Update, dan Delete untuk kategori buku.
-  ![Tabel Indeks Kategori](path_screenshot_di_sini)
-- **Manajemen Buku**: Fungsionalitas CRUD yang komprehensif untuk buku, menampilkan pengikatan data relasional dengan Kategori dan validasi input yang kuat.
-  ![Formulir Manajemen Buku](path_screenshot_di_sini)
-- **Arsitektur Database**: Membuat migrasi untuk tabel `kategoris` dan `bukus`, serta memperluas tabel `users` dengan field `id_google` dan `otp`.
+- **Barang Module (CRUD)**
+  - New `BarangController` with full CRUD operations (`create`, `store`, `edit`, `update`, `destroy`)
+  - New `Barang` model and database migration (`create_barangs_table`)
+  - New Barang dashboard view (`resources/views/dashboard/barang/`)
+  - Sidebar navigation entry for "Barang" menu item
+  - `DashboardController::barang()` method to display Barang data table
 
-### 📊 Sistem Pelaporan
-- **Mesin Pembuat PDF**: Mengintegrasikan `barryvdh/laravel-dompdf` untuk pembuatan PDF sisi server yang berkualitas tinggi.
-- **Laporan Buku Dinamis**: Pembuatan laporan buku secara otomatis dalam format A4 Landscape, termasuk detail kategori terkait.
-  ![Laporan PDF Buku](path_screenshot_di_sini)
-- **Laporan Kategori Dinamis**: Pembuatan laporan kategori secara otomatis dalam format A4 Portrait, menampilkan jumlah buku per kategori.
-  ![Laporan PDF Kategori](path_screenshot_di_sini)
+- **Barang Label Printing**
+  - `printLabel()` method in `BarangController` for generating printable labels
+  - Label report view (`resources/views/reports/barang_label.blade.php`)
+  - "Cetak Label" button on the Barang data table (enabled when rows are selected)
+  - Row checkbox selection with "Select All" functionality on the data table
 
-### 🎨 UI/UX & Komponen
-- **Navigasi Sidebar Dinamis**: Mengimplementasikan highlighting sidebar cerdas yang mencerminkan rute aktif saat ini menggunakan logika Blade `request()->is()`.
-- **Data Tables yang Terpoles**: Menyempurnakan komponen `data-table` dengan penyelarasan ikon yang dioptimalkan dan spasi untuk tombol aksi (Edit/Hapus).
-- **Desain Auth Terpadu**: Menata halaman Login, Register, dan OTP dengan estetika premium yang konsisten sesuai dengan tema dashboard.
+- **Data Table Component Enhancements**
+  - `labelRoute` prop support in `data-table.blade.php` component
+  - Conditional checkbox column (header + body) when `labelRoute` is provided
+  - JavaScript for check-all toggle and dynamic button state management
 
+- **Routes**
+  - `GET /barang` — Barang listing page
+  - `GET /barang/create` — Create form
+  - `POST /barang/store` — Store new barang
+  - `GET /barang/{id}/edit` — Edit form
+  - `PUT /barang/{id}` — Update barang
+  - `DELETE /barang/{id}` — Delete barang
+  - `POST /barang/print-label` — Print selected labels
+
+### Fixed
+
+- Trailing comma consistency in `DashboardController` for `kategori()` and `buku()` view data arrays

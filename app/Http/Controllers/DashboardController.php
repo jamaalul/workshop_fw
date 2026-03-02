@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\Kategori;
+use App\Models\Barang;
 
 class DashboardController extends Controller
 {
@@ -39,7 +39,7 @@ class DashboardController extends Controller
             'title' => 'Data Kategori',
             'createRoute' => 'kategori.create',
             'editRoute' => 'kategori.edit',
-            'deleteRoute' => 'kategori.destroy'
+            'deleteRoute' => 'kategori.destroy',
         ]);
     }
 
@@ -54,8 +54,23 @@ class DashboardController extends Controller
             'title' => 'Data Buku',
             'createRoute' => 'buku.create',
             'editRoute' => 'buku.edit',
-            'deleteRoute' => 'buku.destroy'
+            'deleteRoute' => 'buku.destroy',
+        ]);
+    }
+
+    public function barang()
+    {
+        $barangs = Barang::select('id', 'nama', 'harga')->get()->toArray();
+
+        return view('dashboard.barang.table', [
+            'tableData' => $barangs,
+            'model' => 'Barang',
+            'idField' => 'id',
+            'title' => 'Data Barang',
+            'createRoute' => 'barang.create',
+            'editRoute' => 'barang.edit',
+            'deleteRoute' => 'barang.destroy',
+            'labelRoute' => 'barang.printLabel',
         ]);
     }
 }
-
