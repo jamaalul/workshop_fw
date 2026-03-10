@@ -46,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/barang/{id}', [\App\Http\Controllers\BarangController::class, 'update'])->name('barang.update');
     Route::delete('/barang/{id}', [\App\Http\Controllers\BarangController::class, 'destroy'])->name('barang.destroy');
     Route::post('/barang/print-label', [\App\Http\Controllers\BarangController::class, 'printLabel'])->name('barang.printLabel');
+
+    Route::get('/jquery/html-table', [DashboardController::class, 'jqueryHtmlTable'])->name('jquery.html-table');
+    Route::get('/jquery/datatables', [DashboardController::class, 'jqueryDataTables'])->name('jquery.datatables');
+    Route::get('/jquery/select', [DashboardController::class, 'jquerySelect'])->name('jquery.select');
 });
 
 Route::get('/phpinfo', function () {

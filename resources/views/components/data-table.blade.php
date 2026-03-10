@@ -72,6 +72,7 @@
                                         @endif
                                     @endforeach
                                     <td class="text-right" style="width: 1%; white-space: nowrap;">
+                                        <div class="d-flex justify-content-end align-items-center" style="gap: 0.5rem;">
                                             @if ($editRoute && isset($row[$idField]))
                                                 <a href="{{ route($editRoute, $row[$idField]) }}"
                                                     class="d-flex align-items-center justify-content-center btn btn-inverse-primary btn-icon"

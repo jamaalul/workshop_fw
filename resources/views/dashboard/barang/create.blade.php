@@ -18,13 +18,13 @@
                 <div class="card-body">
                     <h4 class="card-title">Form Barang</h4>
                     <p class="card-description"> Tambah barang baru </p>
-                    <form class="forms-sample" action="{{ route('barang.store') }}" method="POST">
+                    <form class="forms-sample" id="formBarang" action="{{ route('barang.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="nama">Nama Barang</label>
                             <input type="text" class="form-control @error('nama') is-invalid @enderror"
                                 id="nama" name="nama" placeholder="Masukkan nama barang"
-                                value="{{ old('nama') }}">
+                                value="{{ old('nama') }}" required>
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -33,14 +33,14 @@
                             <label for="harga">Harga</label>
                             <input type="number" step="0.01" class="form-control @error('harga') is-invalid @enderror"
                                 id="harga" name="harga" placeholder="Masukkan harga barang"
-                                value="{{ old('harga') }}">
+                                value="{{ old('harga') }}" required>
                             @error('harga')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button type="submit" class="me-2 btn btn-gradient-primary">Submit</button>
-                        <a href="{{ route('barang') }}" class="btn btn-light">Cancel</a>
                     </form>
+                    <button type="button" class="me-2 btn btn-gradient-primary btn-submit">Submit</button>
+                    <a href="{{ route('barang') }}" class="btn btn-light">Cancel</a>
                 </div>
             </div>
         </div>
@@ -48,5 +48,22 @@
 @endsection
 
 @push('scripts')
-    {{-- javascript --}}
+    <script>
+        $(document).ready(function() {
+            $('.btn-submit').on('click', function() {
+                var $btn = $(this);
+                var $form = $btn.closest('.card-body').find('form');
+
+                if (!$form[0].checkValidity()) {
+                    $form[0].reportValidity();
+                    return;
+                }
+
+                $btn.prop('disabled', true);
+                $btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
+
+                $form.submit();
+            });
+        });
+    </script>
 @endpush

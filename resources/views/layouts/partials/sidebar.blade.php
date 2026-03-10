@@ -29,7 +29,25 @@
         <li class="nav-item {{ request()->is('barang*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('barang') }}">
                 <span class="menu-title">Barang</span>
-                <i class="fa-inbox menu-icon"></i>
+                <i class="fa fa-inbox menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('jquery/html-table*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('jquery.html-table') }}">
+                <span class="menu-title">JQuery HTML Table</span>
+                <i class="mdi mdi-table menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('jquery/datatables*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('jquery.datatables') }}">
+                <span class="menu-title">JQuery DataTables</span>
+                <i class="mdi mdi-table-large menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('jquery/select*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('jquery.select') }}">
+                <span class="menu-title">JQuery Select</span>
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
         </li>
     </ul>

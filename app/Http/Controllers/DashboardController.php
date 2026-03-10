@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Buku;
 use App\Models\Kategori;
-use App\Models\Barang;
 
 class DashboardController extends Controller
 {
@@ -72,5 +72,20 @@ class DashboardController extends Controller
             'deleteRoute' => 'barang.destroy',
             'labelRoute' => 'barang.printLabel',
         ]);
+    }
+
+    public function jqueryHtmlTable()
+    {
+        return view('dashboard.jquery.html-table');
+    }
+
+    public function jqueryDataTables()
+    {
+        return view('dashboard.jquery.datatables');
+    }
+
+    public function jquerySelect()
+    {
+        return view('dashboard.jquery.select');
     }
 }

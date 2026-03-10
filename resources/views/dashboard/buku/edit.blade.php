@@ -18,14 +18,14 @@
                 <div class="card-body">
                     <h4 class="card-title">Form Buku</h4>
                     <p class="card-description"> Edit buku </p>
-                    <form class="forms-sample" action="{{ route('buku.update', $buku->id) }}" method="POST">
+                    <form class="forms-sample" id="formBuku" action="{{ route('buku.update', $buku->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
                             <label for="kode">Kode Buku</label>
                             <input type="text" class="form-control @error('kode') is-invalid @enderror"
                                 id="kode" name="kode" placeholder="Masukkan kode buku"
-                                value="{{ old('kode', $buku->kode) }}">
+                                value="{{ old('kode', $buku->kode) }}" required>
                             @error('kode')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -34,7 +34,7 @@
                             <label for="judul">Judul Buku</label>
                             <input type="text" class="form-control @error('judul') is-invalid @enderror"
                                 id="judul" name="judul" placeholder="Masukkan judul buku"
-                                value="{{ old('judul', $buku->judul) }}">
+                                value="{{ old('judul', $buku->judul) }}" required>
                             @error('judul')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -43,7 +43,7 @@
                             <label for="pengarang">Pengarang</label>
                             <input type="text" class="form-control @error('pengarang') is-invalid @enderror"
                                 id="pengarang" name="pengarang" placeholder="Masukkan nama pengarang"
-                                value="{{ old('pengarang', $buku->pengarang) }}">
+                                value="{{ old('pengarang', $buku->pengarang) }}" required>
                             @error('pengarang')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -51,7 +51,7 @@
                         <div class="form-group">
                             <label for="kategori_id">Kategori</label>
                             <select class="form-control @error('kategori_id') is-invalid @enderror"
-                                id="kategori_id" name="kategori_id">
+                                id="kategori_id" name="kategori_id" required>
                                 <option value="">Pilih Kategori</option>
                                 @foreach($kategoris as $kategori)
                                     <option value="{{ $kategori->id }}" {{ old('kategori_id', $buku->kategori_id) == $kategori->id ? 'selected' : '' }}>
@@ -63,9 +63,9 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button type="submit" class="me-2 btn btn-gradient-primary">Save Changes</button>
-                        <a href="{{ route('buku') }}" class="btn btn-light">Cancel</a>
                     </form>
+                    <button type="button" class="me-2 btn btn-gradient-primary btn-submit">Save Changes</button>
+                    <a href="{{ route('buku') }}" class="btn btn-light">Cancel</a>
                 </div>
             </div>
         </div>
@@ -73,5 +73,22 @@
 @endsection
 
 @push('scripts')
-    {{-- javascript --}}
+    <script>
+        $(document).ready(function() {
+            $('.btn-submit').on('click', function() {
+                var $btn = $(this);
+                var $form = $btn.closest('.card-body').find('form');
+
+                if (!$form[0].checkValidity()) {
+                    $form[0].reportValidity();
+                    return;
+                }
+
+                $btn.prop('disabled', true);
+                $btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
+
+                $form.submit();
+            });
+        });
+    </script>
 @endpush
