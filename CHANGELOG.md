@@ -1,5 +1,104 @@
 # Changelog
 
+## Step 5 - Case Study 1 & 2: Wilayah Dropdown & POS - 2026-03-16
+
+### Added
+
+- **Database Migrations**
+  - Added `kode` column to `barangs` table for POS lookup
+  - Created `penjualans` table with fields: id, timestamp, total
+  - Created `penjualan_details` table with fields: id, id_penjualan (FK), id_barang (FK), jumlah, subtotal
+
+- **Database Seeders**
+  - Created `BarangSeeder` with 12 sample records including electronics items
+
+- **Eloquent Models**
+  - `RegProvince` - table: reg_provinces
+  - `RegRegency` - table: reg_regencies
+  - `RegDistrict` - table: reg_districts
+  - `RegVillage` - table: reg_villages
+  - `Penjualan` - table: penjualans
+  - `PenjualanDetail` - table: penjualan_details
+  - Updated `Barang` model to use 'kode' as primary key
+
+- **Case Study 1: Indonesian Administrative Region Dropdown**
+  - Created `WilayahController` with methods:
+    - `getProvinsi()` - returns all provinces
+    - `getKota($id)` - returns regencies by province_id
+    - `getKecamatan($id)` - returns districts by regency_id
+    - `getKelurahan($id)` - returns villages by district_id
+  - Created two view versions:
+    - `resources/views/dashboard/wilayah/jquery.blade.php` - using jQuery AJAX
+    - `resources/views/dashboard/wilayah/axios.blade.php` - using Axios
+  - Both versions include:
+    - Cascading dropdowns (Provinsi → Kota → Kecamatan → Kelurahan)
+    - "Memuat..." loading text while fetching data
+    - SweetAlert2 error notifications
+    - Dependent dropdowns disabled until parent is selected
+
+- **Case Study 2: Point of Sales (POS) Page**
+  - Created `PosController` with methods:
+    - `index()` - returns POS view
+    - `findBarang($kode)` - finds barang by kode
+    - `bayar(Request $req)` - saves transaction to database
+  - Created two view versions:
+    - `resources/views/dashboard/pos/jquery.blade.php` - using jQuery AJAX
+    - `resources/views/dashboard/pos/axios.blade.php` - using Axios
+  - Both versions include:
+    - Form with Kode, Nama, Harga, Jumlah inputs
+    - Enter key triggers barang lookup
+    - Add items to cart table (update qty if exists, add new if not)
+    - Editable quantity in table rows
+    - Delete button per row
+    - Real-time total calculation
+    - Bayar button saves to database with transaction details
+    - SweetAlert2 notifications for success/error
+
+- **Routes Added**
+  - `/wilayah` - wilayah index
+  - `/wilayah/jquery` - wilayah jQuery version
+  - `/wilayah/axios` - wilayah Axios version
+  - `/wilayah/provinsi` - get provinces
+  - `/wilayah/kota/{id}` - get cities
+  - `/wilayah/kecamatan/{id}` - get districts
+  - `/wilayah/kelurahan/{id}` - get villages
+  - `/pos` - pos index
+  - `/pos/jquery` - pos jQuery version
+  - `/pos/axios` - pos Axios version
+  - `/pos/barang/{kode}` - find barang
+  - `/pos/bayar` - process payment
+
+- **Sidebar Updated**
+  - Added navigation links for:
+    - Wilayah (AJAX) → routes to wilayah.jquery
+    - Wilayah (AXIOS) → routes to wilayah.axios
+    - POS (AJAX) → routes to pos.jquery
+    - POS (AXIOS) → routes to pos.axios
+
+- **Files Created:**
+  - `database/migrations/2026_03_16_000001_add_kode_to_barangs_table.php`
+  - `database/migrations/2026_03_16_000002_create_penjualans_table.php`
+  - `database/migrations/2026_03_16_000003_create_penjualan_details_table.php`
+  - `database/seeders/BarangSeeder.php`
+  - `app/Models/RegProvince.php`
+  - `app/Models/RegRegency.php`
+  - `app/Models/RegDistrict.php`
+  - `app/Models/RegVillage.php`
+  - `app/Models/Penjualan.php`
+  - `app/Models/PenjualanDetail.php`
+  - `app/Http/Controllers/WilayahController.php`
+  - `app/Http/Controllers/PosController.php`
+  - `resources/views/dashboard/wilayah/jquery.blade.php`
+  - `resources/views/dashboard/wilayah/axios.blade.php`
+  - `resources/views/dashboard/pos/jquery.blade.php`
+  - `resources/views/dashboard/pos/axios.blade.php`
+
+- **Files Modified:**
+  - `app/Models/Barang.php`
+  - `database/seeders/DatabaseSeeder.php`
+  - `routes/web.php`
+  - `resources/views/layouts/partials/sidebar.blade.php`
+
 ## Step 1 - Submit Button Spinner / Loader - 2026-03-10
 
 ### Changed

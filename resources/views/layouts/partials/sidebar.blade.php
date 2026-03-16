@@ -50,5 +50,29 @@
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
         </li>
+        <li class="nav-item {{ request()->is('wilayah/jquery') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('wilayah.jquery') }}">
+                <span class="menu-title">Wilayah (AJAX)</span>
+                <i class="mdi mdi-map-marker menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('wilayah/axios*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('wilayah.axios') }}">
+                <span class="menu-title">Wilayah (AXIOS)</span>
+                <i class="mdi mdi-map-marker menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('pos/jquery*') && !request()->is('pos/*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('pos.jquery') }}">
+                <span class="menu-title">POS (AJAX)</span>
+                <i class="mdi mdi-cart menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('pos/axios*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('pos.axios') }}">
+                <span class="menu-title">POS (AXIOS)</span>
+                <i class="mdi mdi-cart menu-icon"></i>
+            </a>
+        </li>
     </ul>
 </nav>
