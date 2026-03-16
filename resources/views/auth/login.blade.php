@@ -5,6 +5,13 @@
 @section('content')
     <h4>Hello! let's get started</h4>
     <h6 class="font-weight-light">Sign in to continue.</h6>
+
+    @if (session('error'))
+        <div class="alert alert-danger mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <form class="pt-3 forms-sample" method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-group">

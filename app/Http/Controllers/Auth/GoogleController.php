@@ -29,19 +29,26 @@ class GoogleController extends Controller
     {
         try {
             $user = Socialite::driver('google')->user();
+        }
+        catch (Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Google Socialite error', ['exception' => $e]);
+            return redirect('login')->with('error', 'Could not connect to Google: [' . class_basename($e) . '] ' . $e->getMessage());
+        }
 
+        try {
             $finduser = User::where('id_google', $user->id)
                 ->orWhere('email', $user->email)
                 ->first();
 
             if ($finduser) {
                 // Update id_google if not set
-                if (! $finduser->id_google) {
+                if (!$finduser->id_google) {
                     $finduser->update(['id_google' => $user->id]);
                 }
 
                 Auth::login($finduser);
-            } else {
+            }
+            else {
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
@@ -59,15 +66,15 @@ class GoogleController extends Controller
             $otp = rand(100000, 999999);
             $authUser->update(['otp' => $otp]);
 
-            // Import Mail and OtpMail at the top
             \Illuminate\Support\Facades\Mail::to($authUser->email)->send(new \App\Mail\OtpMail($otp));
 
             session(['otp_login_user_id' => $authUser->id]);
 
             return redirect()->route('otp.form');
 
-        } catch (Exception $e) {
-            return redirect('login')->with('error', 'Something went wrong with Google Login.');
+        }
+        catch (Exception $e) {
+            return redirect('login')->with('error', 'Google login error: ' . $e->getMessage());
         }
     }
 }
