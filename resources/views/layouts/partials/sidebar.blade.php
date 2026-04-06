@@ -74,5 +74,20 @@
                 <i class="mdi mdi-cart menu-icon"></i>
             </a>
         </li>
+        <li class="nav-item {{ request()->is('canteen*') || request()->is('payment*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('canteen.index') }}">
+                <span class="menu-title">Mini Canteen</span>
+                <i class="mdi mdi-food menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item pt-3">
+            <span class="nav-link text-secondary text-uppercase font-weight-bold">Vendor Dashboard</span>
+        </li>
+        <li class="nav-item {{ request()->is('vendor/orders*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('vendor.orders') }}">
+                <span class="menu-title">Paid Orders</span>
+                <i class="mdi mdi-currency-usd menu-icon"></i>
+            </a>
+        </li>
     </ul>
 </nav>

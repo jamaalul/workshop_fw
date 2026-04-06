@@ -71,8 +71,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/axios', function() { return view('dashboard.pos.axios'); })->name('pos.axios');
         Route::get('/barang/{kode}', [PosController::class, 'findBarang'])->name('pos.barang');
         Route::post('/bayar', [PosController::class, 'bayar'])->name('pos.bayar');
+        // Vendor Routes
+        Route::prefix('vendor')->group(function () {
+            Route::get('/dashboard', [App\Http\Controllers\VendorController::class, 'dashboard'])->name('vendor.dashboard');
+            Route::resource('/menus', App\Http\Controllers\VendorMenuController::class);
+            Route::get('/orders', [App\Http\Controllers\VendorController::class, 'orders'])->name('vendor.orders');
+        });
     });
 });
+
+// Webhook (No CSRF)
+Route::post('/payment/notification', [App\Http\Controllers\PaymentController::class, 'notification'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+// Guest/Customer Routes (Public)
+Route::get('/canteen', [App\Http\Controllers\CanteenController::class, 'index'])->name('canteen.index');
+Route::get('/canteen/menu/{vendor}', [App\Http\Controllers\CanteenController::class, 'getMenu']);
+Route::post('/canteen/order', [App\Http\Controllers\CanteenController::class, 'store'])->name('canteen.order');
+Route::get('/canteen/payment/{pesanan}', [App\Http\Controllers\PaymentController::class, 'show'])->name('payment.show');
+Route::post('/canteen/payment/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
+Route::get('/canteen/payment/status/{pesanan}', [App\Http\Controllers\PaymentController::class, 'checkStatus']);
+Route::get('/canteen/payment/success/{pesanan}', [App\Http\Controllers\PaymentController::class, 'success'])->name('canteen.payment.success');
 
 Route::get('/phpinfo', function () {
     phpinfo();
