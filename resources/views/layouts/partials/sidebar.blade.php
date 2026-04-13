@@ -89,5 +89,39 @@
                 <i class="mdi mdi-currency-usd menu-icon"></i>
             </a>
         </li>
+
+        {{-- ── Customer Menu (with submenu) ── --}}
+        <li class="nav-item {{ request()->is('customer*') ? 'active' : '' }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#customerMenu" role="button"
+               aria-expanded="{{ request()->is('customer*') ? 'true' : 'false' }}"
+               aria-controls="customerMenu">
+                <span class="menu-title">Customer</span>
+                <i class="mdi mdi-account-multiple menu-icon"></i>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse {{ request()->is('customer*') ? 'show' : '' }}" id="customerMenu">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('customer.index') ? 'active' : '' }}"
+                           href="{{ route('customer.index') }}">
+                            <i class="mdi mdi-account-group me-1"></i> Data Customer
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('customer.create.blob') ? 'active' : '' }}"
+                           href="{{ route('customer.create.blob') }}">
+                            <i class="mdi mdi-database me-1"></i> Tambah Customer 1 (Blob)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('customer.create.file') ? 'active' : '' }}"
+                           href="{{ route('customer.create.file') }}">
+                            <i class="mdi mdi-folder-image me-1"></i> Tambah Customer 2 (File)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 </nav>
+

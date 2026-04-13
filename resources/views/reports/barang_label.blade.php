@@ -40,7 +40,7 @@
 
         td {
             width: 38mm;
-            height: 18mm;
+            height: 22mm;
             text-align: center;
             vertical-align: middle;
             padding: 1mm;
@@ -50,7 +50,7 @@
             font-size: 7pt;
             font-weight: bold;
             line-height: 1.2;
-            margin-bottom: 1mm;
+            margin-bottom: 0.5mm;
             word-wrap: break-word;
             overflow: hidden;
         }
@@ -59,6 +59,24 @@
             font-size: 9pt;
             font-weight: bold;
             color: #000;
+        }
+
+        .label-barcode {
+            display: block;
+            margin: 0 auto 0.5mm;
+            max-width: 34mm;
+            height: 6mm;
+        }
+
+        .label-barcode img {
+            width: 100%;
+            height: 6mm;
+        }
+
+        .label-id {
+            font-size: 5.5pt;
+            color: #333;
+            letter-spacing: 0.5px;
         }
 
         /* Optional: Make browser preview closer to print size */
@@ -120,6 +138,22 @@
                                     @if ($item)
                                         <div class="label-nama">{{ $item->nama }}</div>
                                         <div class="label-harga">Rp {{ number_format($item->harga, 0, ',', '.') }}</div>
+                                        @php
+                                            // Use PNG generator — DomPDF renders <img> data URIs reliably
+                                            $barcodeGen = new \Picqer\Barcode\BarcodeGeneratorPNG();
+                                            $idStr      = (string) $item->id;
+                                            $barcodePng = $barcodeGen->getBarcode(
+                                                $idStr,
+                                                $barcodeGen::TYPE_CODE_128,
+                                                2,   // width factor
+                                                30   // height (px)
+                                            );
+                                            $barcodeB64 = base64_encode($barcodePng);
+                                        @endphp
+                                        <div class="label-barcode">
+                                            <img src="data:image/png;base64,{{ $barcodeB64 }}" alt="Barcode {{ $idStr }}">
+                                        </div>
+                                        <div class="label-id">ID: {{ $item->id }}</div>
                                     @endif
                                 </td>
                             @endfor

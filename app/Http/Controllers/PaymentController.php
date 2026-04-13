@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Pesanan;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Log;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
 
 class PaymentController extends Controller
 {
@@ -32,6 +38,32 @@ class PaymentController extends Controller
             return redirect()->route('payment.show', ['pesanan' => $pesanan->idpesanan]);
         }
         return view('canteen.success', compact('pesanan'));
+    }
+
+    /**
+     * Generate a QR code PNG for the given idpesanan.
+     * Route: GET /canteen/qrcode/{idpesanan}
+     */
+    public function qrCode(Pesanan $pesanan)
+    {
+        $writer = new PngWriter();
+
+        $qrCode = new QrCode(
+            data: 'PESANAN:' . $pesanan->idpesanan,
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::High,
+            size: 300,
+            margin: 10,
+            roundBlockSizeMode: RoundBlockSizeMode::Margin,
+            foregroundColor: new Color(0, 0, 0),
+            backgroundColor: new Color(255, 255, 255),
+        );
+
+        $result = $writer->write($qrCode);
+
+        return response($result->getString(), 200)
+            ->header('Content-Type', $result->getMimeType())
+            ->header('Cache-Control', 'public, max-age=3600');
     }
 
     public function create(Request $request)

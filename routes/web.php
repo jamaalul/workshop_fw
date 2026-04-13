@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -78,6 +79,20 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/orders', [App\Http\Controllers\VendorController::class, 'orders'])->name('vendor.orders');
         });
     });
+
+    // ── Customer Routes ──────────────────────────────────────────────────────
+    Route::prefix('customer')->name('customer.')->group(function () {
+        Route::get('/',              [CustomerController::class, 'index'])->name('index');
+        Route::delete('/{id}',       [CustomerController::class, 'destroy'])->name('destroy');
+
+        // Submenu 2: Tambah Customer 1 (Blob)
+        Route::get('/create-blob',  [CustomerController::class, 'createBlob'])->name('create.blob');
+        Route::post('/store-blob',  [CustomerController::class, 'storeBlob'])->name('store.blob');
+
+        // Submenu 3: Tambah Customer 2 (File)
+        Route::get('/create-file',  [CustomerController::class, 'createFile'])->name('create.file');
+        Route::post('/store-file',  [CustomerController::class, 'storeFile'])->name('store.file');
+    });
 });
 
 // Webhook (No CSRF)
@@ -91,6 +106,7 @@ Route::get('/canteen/payment/{pesanan}', [App\Http\Controllers\PaymentController
 Route::post('/canteen/payment/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
 Route::get('/canteen/payment/status/{pesanan}', [App\Http\Controllers\PaymentController::class, 'checkStatus']);
 Route::get('/canteen/payment/success/{pesanan}', [App\Http\Controllers\PaymentController::class, 'success'])->name('canteen.payment.success');
+Route::get('/canteen/qrcode/{pesanan}', [App\Http\Controllers\PaymentController::class, 'qrCode'])->name('canteen.qrcode');
 
 Route::get('/phpinfo', function () {
     phpinfo();
