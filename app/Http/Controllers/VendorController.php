@@ -38,12 +38,8 @@ class VendorController extends Controller
      */
     public function orderDetail($idpesanan)
     {
-        // For demo, we assume vendor ID 1
-        $vendorId = 1;
 
-        $order = Pesanan::with(['detailPesanan.menu' => function($q) use ($vendorId) {
-            $q->where('idvendor', $vendorId);
-        }])->find($idpesanan);
+        $order = Pesanan::with('detailPesanan.menu')->find($idpesanan);
 
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
