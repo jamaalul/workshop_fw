@@ -93,12 +93,25 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create-file',  [CustomerController::class, 'createFile'])->name('create.file');
         Route::post('/store-file',  [CustomerController::class, 'storeFile'])->name('store.file');
     });
+
+    // ── Scanning Routes ──────────────────────────────────────────────────────
+    Route::get('/barcode/scan', [\App\Http\Controllers\BarcodeController::class, 'index'])->name('barcode.scan');
+    Route::get('/api/items/{barcode}', [\App\Http\Controllers\BarcodeController::class, 'lookup'])->name('api.items.lookup');
+
+    Route::get('/vendor/scan', [\App\Http\Controllers\VendorController::class, 'scanIndex'])->name('vendor.scan');
+    Route::get('/api/orders/{idpesanan}/vendor', [\App\Http\Controllers\VendorController::class, 'orderDetail'])->name('api.orders.detail');
+    Route::get('/order/{pesanan}/view', [\App\Http\Controllers\OrderController::class, 'showQrCode'])->name('order.show');
+
+    Route::get('/phpinfo', function () {
+        phpinfo();
+    });
 });
 
 // Webhook (No CSRF)
 Route::post('/payment/notification', [App\Http\Controllers\PaymentController::class, 'notification'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 // Guest/Customer Routes (Public)
+Route::get('/orders/{pesanan}/qrcode', [App\Http\Controllers\PaymentController::class, 'showQrCode'])->name('orders.qrcode');
 Route::get('/canteen', [App\Http\Controllers\CanteenController::class, 'index'])->name('canteen.index');
 Route::get('/canteen/menu/{vendor}', [App\Http\Controllers\CanteenController::class, 'getMenu']);
 Route::post('/canteen/order', [App\Http\Controllers\CanteenController::class, 'store'])->name('canteen.order');
@@ -106,6 +119,7 @@ Route::get('/canteen/payment/{pesanan}', [App\Http\Controllers\PaymentController
 Route::post('/canteen/payment/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
 Route::get('/canteen/payment/status/{pesanan}', [App\Http\Controllers\PaymentController::class, 'checkStatus']);
 Route::get('/canteen/payment/success/{pesanan}', [App\Http\Controllers\PaymentController::class, 'success'])->name('canteen.payment.success');
+// QR code image endpoint — used inline by success.blade.php (and vendor scanner)
 Route::get('/canteen/qrcode/{pesanan}', [App\Http\Controllers\PaymentController::class, 'qrCode'])->name('canteen.qrcode');
 
 Route::get('/phpinfo', function () {

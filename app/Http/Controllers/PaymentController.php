@@ -49,7 +49,7 @@ class PaymentController extends Controller
         $writer = new PngWriter();
 
         $qrCode = new QrCode(
-            data: 'PESANAN:' . $pesanan->idpesanan,
+            data: $pesanan->idpesanan,
             encoding: new Encoding('UTF-8'),
             errorCorrectionLevel: ErrorCorrectionLevel::High,
             size: 300,

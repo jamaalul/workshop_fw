@@ -89,6 +89,18 @@
                 <i class="mdi mdi-currency-usd menu-icon"></i>
             </a>
         </li>
+        <li class="nav-item {{ request()->is('vendor/scan*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('vendor.scan') }}">
+                <span class="menu-title">Scan Order QR</span>
+                <i class="mdi mdi-qrcode-scan menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->is('barcode/scan*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('barcode.scan') }}">
+                <span class="menu-title">Scan Item Barcode</span>
+                <i class="mdi mdi-barcode-scan menu-icon"></i>
+            </a>
+        </li>
 
         {{-- ── Customer Menu (with submenu) ── --}}
         <li class="nav-item {{ request()->is('customer*') ? 'active' : '' }}">
