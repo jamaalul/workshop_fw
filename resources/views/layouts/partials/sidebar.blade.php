@@ -35,19 +35,19 @@
         <li class="nav-item {{ request()->is('jquery/html-table*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('jquery.html-table') }}">
                 <span class="menu-title">JQuery HTML Table</span>
-                <i class="mdi mdi-table menu-icon"></i>
+                <i class="mdi-table mdi menu-icon"></i>
             </a>
         </li>
         <li class="nav-item {{ request()->is('jquery/datatables*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('jquery.datatables') }}">
                 <span class="menu-title">JQuery DataTables</span>
-                <i class="mdi mdi-table-large menu-icon"></i>
+                <i class="mdi-table-large mdi menu-icon"></i>
             </a>
         </li>
         <li class="nav-item {{ request()->is('jquery/select*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('jquery.select') }}">
                 <span class="menu-title">JQuery Select</span>
-                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                <i class="mdi-format-list-bulleted mdi menu-icon"></i>
             </a>
         </li>
         <li class="nav-item {{ request()->is('wilayah/jquery') ? 'active' : '' }}">
@@ -80,8 +80,14 @@
                 <i class="mdi mdi-food menu-icon"></i>
             </a>
         </li>
-        <li class="nav-item pt-3">
-            <span class="nav-link text-secondary text-uppercase font-weight-bold">Vendor Dashboard</span>
+        <li class="nav-item {{ request()->is('kunjungan*') || request()->is('payment*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('kunjungan.index') }}">
+                <span class="menu-title">Kunjungan Toko</span>
+                <i class="fa-solid fa-store menu-icon"></i>
+            </a>
+        </li>
+        <li class="pt-3 nav-item">
+            <span class="font-weight-bold text-secondary text-uppercase nav-link">Vendor Dashboard</span>
         </li>
         <li class="nav-item {{ request()->is('vendor/orders*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('vendor.orders') }}">
@@ -105,30 +111,29 @@
         {{-- ── Customer Menu (with submenu) ── --}}
         <li class="nav-item {{ request()->is('customer*') ? 'active' : '' }}">
             <a class="nav-link" data-bs-toggle="collapse" href="#customerMenu" role="button"
-               aria-expanded="{{ request()->is('customer*') ? 'true' : 'false' }}"
-               aria-controls="customerMenu">
+                aria-expanded="{{ request()->is('customer*') ? 'true' : 'false' }}" aria-controls="customerMenu">
                 <span class="menu-title">Customer</span>
                 <i class="mdi mdi-account-multiple menu-icon"></i>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse {{ request()->is('customer*') ? 'show' : '' }}" id="customerMenu">
-                <ul class="nav flex-column sub-menu">
+                <ul class="flex-column nav sub-menu">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('customer.index') ? 'active' : '' }}"
-                           href="{{ route('customer.index') }}">
-                            <i class="mdi mdi-account-group me-1"></i> Data Customer
+                            href="{{ route('customer.index') }}">
+                            <i class="mdi-account-group me-1 mdi"></i> Data Customer
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('customer.create.blob') ? 'active' : '' }}"
-                           href="{{ route('customer.create.blob') }}">
-                            <i class="mdi mdi-database me-1"></i> Tambah Customer 1 (Blob)
+                            href="{{ route('customer.create.blob') }}">
+                            <i class="me-1 mdi mdi-database"></i> Tambah Customer 1 (Blob)
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('customer.create.file') ? 'active' : '' }}"
-                           href="{{ route('customer.create.file') }}">
-                            <i class="mdi mdi-folder-image me-1"></i> Tambah Customer 2 (File)
+                            href="{{ route('customer.create.file') }}">
+                            <i class="me-1 mdi mdi-folder-image"></i> Tambah Customer 2 (File)
                         </a>
                     </li>
                 </ul>
@@ -136,4 +141,3 @@
         </li>
     </ul>
 </nav>
-

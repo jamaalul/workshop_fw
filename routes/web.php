@@ -7,6 +7,8 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StoreVisitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -100,11 +102,21 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/vendor/scan', [\App\Http\Controllers\VendorController::class, 'scanIndex'])->name('vendor.scan');
     Route::get('/api/orders/{idpesanan}/vendor', [\App\Http\Controllers\VendorController::class, 'orderDetail'])->name('api.orders.detail');
-    Route::get('/order/{pesanan}/view', [\App\Http\Controllers\OrderController::class, 'showQrCode'])->name('order.show');
 
-    Route::get('/phpinfo', function () {
-        phpinfo();
+    Route::prefix('kunjungan-toko')->group(function () {
+        Route::get('/', [StoreVisitController::class, 'index'])->name('store-visits.index');
+        Route::get('/history', [StoreVisitController::class, 'history'])->name('store-visits.history');
+        Route::post('/scan', [StoreVisitController::class, 'scan'])->name('store-visits.scan');
     });
+
+    Route::prefix('stores')->group(function () {
+        Route::get('/barcode/{barcode}', [StoreController::class, 'findByBarcode'])->name('stores.byBarcode');
+        Route::post('/', [StoreController::class, 'store'])->name('stores.store');
+        Route::get('/{id}/barcode', [StoreController::class, 'printBarcode'])->name('stores.barcode');
+    });
+
+    Route::get('/kunjungan', [StoreVisitController::class, 'index'])->name('kunjungan.index');
+
 });
 
 // Webhook (No CSRF)
