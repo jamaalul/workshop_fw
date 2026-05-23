@@ -134,6 +134,35 @@ Route::get('/canteen/payment/success/{pesanan}', [App\Http\Controllers\PaymentCo
 // QR code image endpoint — used inline by success.blade.php (and vendor scanner)
 Route::get('/canteen/qrcode/{pesanan}', [App\Http\Controllers\PaymentController::class, 'qrCode'])->name('canteen.qrcode');
 
+
 Route::get('/phpinfo', function () {
     phpinfo();
 });
+
+// ── Antrian (Queue) Routes ────────────────────────────────────────────────────
+
+use App\Http\Controllers\AntrianController;
+
+// Public: guest registration & ticket
+Route::get('/guest',             [AntrianController::class, 'guestForm'])->name('antrian.guest');
+Route::post('/guest',            [AntrianController::class, 'guestStore'])->name('antrian.guest.store');
+Route::get('/tiket/{queue}',     [AntrianController::class, 'tiket'])->name('antrian.tiket');
+
+// Public: queue board display + SSE stream
+Route::get('/queue-board',       [AntrianController::class, 'showQueueBoard'])->name('antrian.board');
+Route::get('/sse/antrian',       [AntrianController::class, 'stream'])
+    ->name('antrian.sse')
+    ->withoutMiddleware([
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+    ]);
+
+// Protected: queue management
+Route::middleware(['auth'])->group(function () {
+    Route::get('/queue-management',                          [AntrianController::class, 'queueManage'])->name('antrian.manage');
+    Route::post('/queue-management/panggil',                 [AntrianController::class, 'panggil'])->name('antrian.panggil');
+    Route::post('/queue-management/panggil-terlambat/{queue}', [AntrianController::class, 'panggilTerlambat'])->name('antrian.panggil-terlambat');
+    Route::post('/queue-management/selesai/{queue}',         [AntrianController::class, 'selesai'])->name('antrian.selesai');
+});
+

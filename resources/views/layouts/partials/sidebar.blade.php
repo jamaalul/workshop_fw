@@ -139,5 +139,38 @@
                 </ul>
             </div>
         </li>
+
+        {{-- ── Queue Management ── --}}
+        <li class="nav-item {{ request()->is('queue-management*') || request()->is('guest*') || request()->is('queue-board*') ? 'active' : '' }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#queueMenu" role="button"
+                aria-expanded="{{ request()->is('queue-management*') || request()->is('guest*') || request()->is('queue-board*') ? 'true' : 'false' }}"
+                aria-controls="queueMenu">
+                <span class="menu-title">Queue Management</span>
+                <i class="mdi mdi-ticket-outline menu-icon"></i>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse {{ request()->is('queue-management*') || request()->is('guest*') || request()->is('queue-board*') ? 'show' : '' }}" id="queueMenu">
+                <ul class="flex-column nav sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('antrian.manage') ? 'active' : '' }}"
+                            href="{{ route('antrian.manage') }}">
+                            <i class="mdi-view-dashboard me-1 mdi"></i> Manajemen Antrian
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('antrian.guest') ? 'active' : '' }}"
+                            href="{{ route('antrian.guest') }}" target="_blank">
+                            <i class="mdi-account-plus me-1 mdi"></i> Form Pendaftaran
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('antrian.board') ? 'active' : '' }}"
+                            href="{{ route('antrian.board') }}" target="_blank">
+                            <i class="mdi-television me-1 mdi"></i> Papan Antrian
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 </nav>
