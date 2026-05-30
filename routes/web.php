@@ -9,6 +9,7 @@ use App\Http\Controllers\PosController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreVisitController;
+use App\Http\Controllers\NfcController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -116,6 +117,15 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/kunjungan', [StoreVisitController::class, 'index'])->name('kunjungan.index');
+
+    // ── NFC Absensi Routes ──────────────────────────────────────────────────
+    Route::prefix('nfc')->group(function () {
+        Route::get('/',         [NfcController::class, 'index'])->name('nfc.index');
+        Route::post('/scan',    [NfcController::class, 'scan'])->name('nfc.scan');
+        Route::get('/register', [NfcController::class, 'register'])->name('nfc.register');
+        Route::post('/register',[NfcController::class, 'storeCard'])->name('nfc.storeCard');
+        Route::get('/history',  [NfcController::class, 'history'])->name('nfc.history');
+    });
 
 });
 

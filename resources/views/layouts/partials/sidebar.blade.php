@@ -172,5 +172,36 @@
                 </ul>
             </div>
         </li>
+        {{-- ── NFC Absensi ── --}}
+        <li class="nav-item {{ request()->is('nfc*') ? 'active' : '' }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#nfcMenu" role="button"
+                aria-expanded="{{ request()->is('nfc*') ? 'true' : 'false' }}" aria-controls="nfcMenu">
+                <span class="menu-title">NFC Absensi</span>
+                <i class="mdi mdi-nfc menu-icon"></i>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse {{ request()->is('nfc*') ? 'show' : '' }}" id="nfcMenu">
+                <ul class="flex-column nav sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('nfc.index') ? 'active' : '' }}"
+                            href="{{ route('nfc.index') }}">
+                            <i class="mdi-nfc-search-variant me-1 mdi"></i> Scanner
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('nfc.register') ? 'active' : '' }}"
+                            href="{{ route('nfc.register') }}">
+                            <i class="mdi-card-plus me-1 mdi"></i> Daftarkan Kartu
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('nfc.history') ? 'active' : '' }}"
+                            href="{{ route('nfc.history') }}">
+                            <i class="mdi-history me-1 mdi"></i> Riwayat Absensi
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 </nav>
